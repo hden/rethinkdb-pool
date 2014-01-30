@@ -1,0 +1,27 @@
+{
+  "name": "rethinkdb-pool",
+  "version": "0.0.0",
+  "description": "Connection-pool for RethinkDB",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hden/rethinkdb-pool.git"
+  },
+  "keywords": [
+    "rethinkdb"
+  ],
+  "author": "Hao-kang Den <haokang.den@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hden/rethinkdb-pool/issues"
+  },
+  "homepage": "https://github.com/hden/rethinkdb-pool",
+  "dependencies": {
+    "rethinkdb": "~1.11.0-4",
+    "generic-pool": "~2.0.4",
+    "debug": "~0.7.4"
+  }
+}
