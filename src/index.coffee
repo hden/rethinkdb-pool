@@ -4,7 +4,7 @@
 r      = require 'rethinkdb'
 debug  = require('debug')('rethinkdb:pool')
 
-module.exports = (options, max, min, idleTimeoutMillis) ->
+module.exports = (options, max, min, idleTimeoutMillis, log) ->
   Pool {
     name: 'rethinkdb'
 
@@ -14,7 +14,7 @@ module.exports = (options, max, min, idleTimeoutMillis) ->
     destroy: (connection) ->
       do connection.close
 
-    log: debug
+    log: log or debug
     max: max or 10
     min: min or 2
     idleTimeoutMillis: idleTimeoutMillis or 30000
