@@ -9,7 +9,7 @@
 
   debug = require('debug')('rethinkdb:pool');
 
-  module.exports = function(options, max, min, idleTimeoutMillis) {
+  module.exports = function(options, max, min, idleTimeoutMillis, log) {
     return Pool({
       name: 'rethinkdb',
       create: function(done) {
@@ -18,7 +18,7 @@
       destroy: function(connection) {
         return connection.close();
       },
-      log: debug,
+      log: log || debug,
       max: max || 10,
       min: min || 2,
       idleTimeoutMillis: idleTimeoutMillis || 30000
