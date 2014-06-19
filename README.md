@@ -16,6 +16,11 @@ Usage
     var Pool = require('rethinkdb-pool');
     var pool = Pool({host:'localhost', port:28015, db:'marvel', authKey:'hunter2'});
 
+### Exported helpers
+
+    pool.r // rethinkdb-client
+    pool.Promise // Bluebird Promise used by rethinkdb-client since v1.13.0
+
 ### Acquire / release resources
 
     pool.acquire(function (error, connection) {
@@ -34,4 +39,18 @@ Usage
           pool.release(connection);
         });
       });
+    });
+
+### Run
+
+    var query = pool.r.table('foo').limit(100);
+
+    // callback
+    pool.run(query, function (error, list) {
+      // no more acquire, no more toArray, yay!!
+    });
+
+    // promise
+    pool.run(query).then(function (list) {
+      // promise, yay
     });
