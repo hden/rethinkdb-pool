@@ -2,6 +2,8 @@ language: node_js
 node_js:
   - "0.11"
 before_install:
-  - "sudo add-apt-repository -y ppa:rethinkdb/ppa"
-  - "sudo apt-get update -q"
-  - "sudo apt-get install -y rethinkdb"
+  - "git clone --depth 1 -b v1.13.x https://github.com/rethinkdb/rethinkdb.git"
+  - "cd rethinkdb"
+  - "./configure --allow-fetch"
+  - "make -j 2"
+  - "rethinkdb&"
