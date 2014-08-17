@@ -4,7 +4,7 @@
   "description": "Connection-pool for RethinkDB",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha"
+    "test": "./node_modules/.bin/mocha --harmony-generators"
   },
   "repository": {
     "type": "git",
@@ -23,5 +23,11 @@
     "rethinkdb": "~1.13.0",
     "generic-pool": "~2.0.4",
     "debug": "~0.7.4"
+  },
+  "devDependencies": {
+    "chai": "~1.9.1",
+    "mocha": "~1.20.1",
+    "coffee-script": "git://github.com/xixixao/coffee-script",
+    "co": "~3.0.6"
   }
 }

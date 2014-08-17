@@ -1,6 +1,9 @@
 rethinkdb-pool
 ==============
 
+[![Build Status](https://travis-ci.org/hden/rethinkdb-pool.svg?branch=master)](https://travis-ci.org/hden/rethinkdb-pool)
+[![NPM version](https://badge.fury.io/js/rethinkdb-pool.svg)](http://badge.fury.io/js/rethinkdb-pool)
+
 Connection-pool for RethinkDB
 
 Installation
