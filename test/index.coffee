@@ -1,7 +1,7 @@
 'use strict'
 
 Pool     = require "#{__dirname}/../"
-{assert} = require 'chai'
+{expect} = require 'chai'
 co       = require 'co'
 
 describe 'rethinkdb-pool', ->
@@ -30,18 +30,17 @@ describe 'rethinkdb-pool', ->
     pool.release connection
 
   it 'should export rethinkdb client', ->
-    assert.ok pool.r
-    assert.ok pool.Promise
+    expect(pool.r).to.exist
+    expect(pool.Promise).to.exist
 
   it 'should acquire connection', co -->
-    assert.ok connection
+    expect(connection).to.exist
 
-  it 'should run query', (done) ->
-    query = r.dbList()
-    pool.run query, (error, result) ->
-      return done(error) if error?
-      assert.include result, 'test'
-      done()
+  it 'should run query', co -->
+    query  = r.tableList()
+    result = yield pool.run query
+
+    expect(result).to.be.an('array')
 
   it 'should return a promise', co -->
     yield pool.run r.table('foo').insert [
@@ -49,5 +48,5 @@ describe 'rethinkdb-pool', ->
       {baz: 'nyan'}
     ]
 
-    list = yield pool.run r.table('foo')
-    assert.propertyVal list, 'length', 2
+    result = yield pool.run r.table('foo')
+    expect(result).to.have.length.of(2)

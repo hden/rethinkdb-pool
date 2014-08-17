@@ -12,7 +12,7 @@
   Promise = require("" + __dirname + "/node_modules/rethinkdb/node_modules/bluebird");
 
   module.exports = function(options, max, min, idleTimeoutMillis, log) {
-    var acquire, pool;
+    var acq, acquire, pool;
     pool = Pool({
       name: 'rethinkdb',
       create: function(done) {
@@ -26,13 +26,29 @@
       min: min || 2,
       idleTimeoutMillis: idleTimeoutMillis || 30000
     });
-    acquire = Promise.promisify(pool.acquire);
+    acq = Promise.promisify(pool.acquire);
+    acquire = function() {
+      return acq().disposer(function(connection) {
+        var e;
+        try {
+          return pool.release(connection);
+        } catch (_error) {
+          e = _error;
+          return debug('failed to release connection %s', e.message);
+        }
+      });
+    };
     pool.r = r;
     pool.Promise = Promise;
     pool.run = function(query, done) {
       var promise;
-      promise = acquire().then(query.run.bind(query)).then(function(cursorOrResult) {
-        return (typeof cursorOrResult.toArray === "function" ? cursorOrResult.toArray() : void 0) || cursorOrResult;
+      debug('querying');
+      promise = Promise.using(acquire(), function(connection) {
+        debug('acquired connection');
+        return query.run(connection).then(function(cursorOrResult) {
+          debug('resolving');
+          return (typeof cursorOrResult.toArray === "function" ? cursorOrResult.toArray() : void 0) || cursorOrResult;
+        });
       });
       if (done != null) {
         return promise.nodeify(done);

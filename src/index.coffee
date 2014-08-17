@@ -21,7 +21,13 @@ module.exports = (options, max, min, idleTimeoutMillis, log) ->
     idleTimeoutMillis: idleTimeoutMillis or 30000
   }
 
-  acquire = Promise.promisify pool.acquire
+  acq     = Promise.promisify pool.acquire
+  acquire = ->
+    acq().disposer (connection) ->
+      try
+        pool.release connection
+      catch e
+        debug 'failed to release connection %s', e.message
 
   # exports rethinkdb driver
   pool.r = r
@@ -29,10 +35,12 @@ module.exports = (options, max, min, idleTimeoutMillis, log) ->
 
   # run helper
   pool.run = (query, done) ->
-    promise = acquire()
-    .then(query.run.bind(query))
-    .then (cursorOrResult) ->
-      cursorOrResult.toArray?() or cursorOrResult
+    debug 'querying'
+    promise = Promise.using acquire(), (connection) ->
+      debug 'acquired connection'
+      query.run(connection).then (cursorOrResult) ->
+        debug 'resolving'
+        cursorOrResult.toArray?() or cursorOrResult
 
     if done?
       promise.nodeify done
