@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/hden/rethinkdb-pool",
   "dependencies": {
-    "rethinkdb": "~1.13.0",
+    "rethinkdb": "~1.14.0",
     "generic-pool": "~2.0.4",
     "debug": "~0.7.4"
   },
