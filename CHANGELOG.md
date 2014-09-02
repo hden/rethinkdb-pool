@@ -1,3 +1,8 @@
+# 0.1.2
+
+- bugfix
+  - fix dependency
+
 # 0.1.1
 
 - features
