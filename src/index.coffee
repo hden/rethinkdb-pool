@@ -3,7 +3,7 @@
 {Pool}  = require 'generic-pool'
 r       = require 'rethinkdb'
 debug   = require('debug')('rethinkdb:pool')
-Promise = require "#{__dirname}/node_modules/rethinkdb/node_modules/bluebird"
+Promise = require 'bluebird'
 
 module.exports = (options, max, min, idleTimeoutMillis, log) ->
   pool = Pool {

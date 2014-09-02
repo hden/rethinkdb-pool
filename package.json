@@ -4,7 +4,9 @@
   "description": "Connection-pool for RethinkDB",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --harmony-generators"
+    "test": "./node_modules/.bin/mocha --harmony-generators",
+    "watch": "./node_modules/.bin/coffee -w -c -o . src/",
+    "build": "./node_modules/.bin/coffee -co . src/"
   },
   "repository": {
     "type": "git",
@@ -20,9 +22,10 @@
   },
   "homepage": "https://github.com/hden/rethinkdb-pool",
   "dependencies": {
-    "rethinkdb": "~1.14.0",
+    "bluebird": "^2.3.2",
+    "debug": "~0.7.4",
     "generic-pool": "~2.0.4",
-    "debug": "~0.7.4"
+    "rethinkdb": "~1.14.0"
   },
   "devDependencies": {
     "chai": "~1.9.1",
