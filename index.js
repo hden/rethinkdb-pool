@@ -9,7 +9,7 @@
 
   debug = require('debug')('rethinkdb:pool');
 
-  Promise = require("" + __dirname + "/node_modules/rethinkdb/node_modules/bluebird");
+  Promise = require('bluebird');
 
   module.exports = function(options, max, min, idleTimeoutMillis, log) {
     var acq, acquire, pool;
