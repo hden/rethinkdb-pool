@@ -25,12 +25,12 @@
     "bluebird": "^2.3.2",
     "debug": "~0.7.4",
     "generic-pool": "^2.1.1",
-    "rethinkdb": "~1.14.0"
+    "rethinkdb": "^1.15.0-0"
   },
   "devDependencies": {
-    "chai": "~1.9.1",
-    "mocha": "~1.20.1",
-    "coffee-script": "git://github.com/xixixao/coffee-script",
-    "co": "~3.0.6"
+    "chai": "^1.10.0",
+    "co": "^4.0.1",
+    "coffee-script": "git://github.com/jashkenas/coffee-script",
+    "mocha": "^2.0.1"
   }
 }
