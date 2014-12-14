@@ -1,8 +1,8 @@
 'use strict'
 
+debug   = require('debug')('rethinkdb:pool')
 {Pool}  = require 'generic-pool'
 r       = require 'rethinkdb'
-debug   = require('debug')('rethinkdb:pool')
 Promise = require 'bluebird'
 
 module.exports = (options, max, min, idleTimeoutMillis, log) ->

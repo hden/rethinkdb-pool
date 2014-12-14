@@ -7,10 +7,10 @@ co       = require 'co'
 describe 'rethinkdb-pool', ->
 
   connection = undefined
-  pool = undefined
-  r = undefined
+  pool       = undefined
+  r          = undefined
 
-  before co -->
+  before -> co ->
     pool = Pool {
       host: 'localhost'
       db: 'test'
@@ -20,29 +20,25 @@ describe 'rethinkdb-pool', ->
 
     yield pool.run r.tableCreate 'foo'
 
-  after co -->
+  after -> co ->
     yield pool.run r.tableDrop 'foo'
-
-  beforeEach co -->
-    connection = yield pool.acquire
-
-  afterEach ->
-    pool.release connection
 
   it 'should export rethinkdb client', ->
     expect(pool.r).to.exist
     expect(pool.Promise).to.exist
 
-  it 'should acquire connection', co -->
+  it 'should acquire connection', -> co ->
+    connection = yield pool.acquire
     expect(connection).to.exist
+    pool.release connection
 
-  it 'should run query', co -->
+  it 'should run query', -> co ->
     query  = r.tableList()
     result = yield pool.run query
 
     expect(result).to.be.an('array')
 
-  it 'should return a promise', co -->
+  it 'should return a promise', -> co ->
     yield pool.run r.table('foo').insert [
       {foo: 'bar'}
       {baz: 'nyan'}
