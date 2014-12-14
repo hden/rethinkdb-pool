@@ -1,3 +1,8 @@
+# 0.2.0
+
+- features
+  - update rethinkdb driver v1.15
+
 # 0.1.2
 
 - bugfix
