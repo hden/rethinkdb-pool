@@ -47,7 +47,7 @@
         debug('acquired connection');
         return query.run(connection).then(function(cursorOrResult) {
           debug('resolving');
-          return (typeof cursorOrResult.toArray === "function" ? cursorOrResult.toArray() : void 0) || cursorOrResult;
+          return (cursorOrResult != null ? typeof cursorOrResult.toArray === "function" ? cursorOrResult.toArray() : void 0 : void 0) || cursorOrResult;
         });
       });
       if (done != null) {
