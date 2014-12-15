@@ -44,5 +44,13 @@ describe 'rethinkdb-pool', ->
       {baz: 'nyan'}
     ]
 
-    result = yield pool.run r.table('foo')
+    promise = pool.run r.table('foo')
+    expect(promise).to.respondTo 'then'
+
+    result = yield promise
     expect(result).to.have.length.of(2)
+
+  it 'should work with null', -> co ->
+    result = yield pool.run r.table('foo').get 'this_key_does_not_exist'
+
+    expect(result).to.be.null()
