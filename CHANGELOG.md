@@ -1,3 +1,9 @@
+# 0.3.0
+
+- major changes
+  - bring your own driver
+  - bring your own promise
+
 # 0.2.0
 
 - features

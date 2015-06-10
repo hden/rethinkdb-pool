@@ -2,48 +2,61 @@
 
 debug   = require('debug')('rethinkdb:pool')
 {Pool}  = require 'generic-pool'
-r       = require 'rethinkdb'
-Promise = require 'bluebird'
 
-module.exports = (options, max, min, idleTimeoutMillis, log) ->
+isFunction = (f) ->
+  typeof f is 'function'
+
+module.exports = (options = {}) ->
+  opts = {}
+
+  for k, v of options when k not in ['max', 'min', 'idleTimeoutMillis', 'log']
+    opts[k] = v
+
   pool = Pool {
     name: 'rethinkdb'
 
     create: (done) ->
-      r.connect options, done
+      options.r.connect opts, done
 
     destroy: (connection) ->
       do connection.close
 
-    log: log or debug
-    max: max or 10
-    min: min or 2
-    idleTimeoutMillis: idleTimeoutMillis or 30000
+    log: options.log or debug
+    max: options.max or 10
+    min: options.min or 2
+    idleTimeoutMillis: options.idleTimeoutMillis or 30 * 1000
   }
 
-  acq     = Promise.promisify pool.acquire
-  acquire = ->
-    acq().disposer (connection) ->
-      try
-        pool.release connection
-      catch e
-        debug 'failed to release connection %s', e.message
-
-  # exports rethinkdb driver
-  pool.r = r
-  pool.Promise = Promise
-
   # run helper
-  pool.run = (query, done) ->
+  run = pool.pooled (connection, query, args..., done) ->
     debug 'querying'
-    promise = Promise.using acquire(), (connection) ->
-      debug 'acquired connection'
-      query.run(connection).then (cursorOrResult) ->
+    args.unshift(connection)
+    args.push(done)
+    query.run.apply(query, args)
+
+  Promise  = options.Promise or global.Promise
+  pool.run = (query, opt, done) ->
+    args = [query]
+
+    if isFunction(opt)
+      done = opt
+      opt  = null
+
+    if opt?
+      args.push(opt)
+
+    promise = new Promise (resolve, reject) ->
+      args.push (error, cursorOrResult) ->
         debug 'resolving'
-        cursorOrResult?.toArray?() or cursorOrResult
+        if error?
+          reject(error)
+        else
+          resolve(cursorOrResult?.toArray?() or cursorOrResult)
+
+      run.apply(pool, args)
 
     if done?
-      promise.nodeify done
+      promise.then((d) -> done(null, d)).catch(done)
     else
       promise
 

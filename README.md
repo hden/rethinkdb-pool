@@ -16,13 +16,18 @@ Usage
 
 ### Create pool
 
+    // run node with --harmony to use built-in Promise
+    // or require any compatible library of your choise
+    var r    = require('rethinkdb')
     var Pool = require('rethinkdb-pool');
-    var pool = Pool({host:'localhost', port:28015, db:'marvel', authKey:'hunter2'});
-
-### Exported helpers
-
-    pool.r // rethinkdb-client
-    pool.Promise // Bluebird Promise used by rethinkdb-client since v1.13.0
+    var pool = Pool({
+      host:'localhost',
+      port:28015,
+      db:'marvel',
+      authKey:'hunter2',
+      r: r,
+      Promise: Promise
+    });
 
 ### Acquire / release resources
 
