@@ -51,7 +51,7 @@ Usage
 
 ### Run
 
-    var query = pool.r.table('foo').limit(100);
+    var query = r.table('foo').limit(100);
 
     // callback
     pool.run(query, function (error, list) {

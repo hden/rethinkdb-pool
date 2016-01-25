@@ -27,6 +27,8 @@ module.exports = (options = {}) ->
     idleTimeoutMillis: options.idleTimeoutMillis or 30 * 1000
   }
 
+  pool.r = options.r
+
   # run helper
   run = pool.pooled (connection, query, args..., done) ->
     debug 'querying'

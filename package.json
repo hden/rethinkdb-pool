@@ -30,6 +30,6 @@
     "co": "^4.5.4",
     "coffee-script": "^1.9.3",
     "mocha": "^2.2.5",
-    "rethinkdb": "^2.0.0-1"
+    "rethinkdb": "^2.2.1"
   }
 }
