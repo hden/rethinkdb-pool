@@ -4,9 +4,7 @@
   "description": "Connection-pool for RethinkDB",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --harmony-generators",
-    "watch": "./node_modules/.bin/coffee -w -c -o . src/",
-    "build": "./node_modules/.bin/coffee -co . src/"
+    "test": "mocha --require intelli-espower-loader"
   },
   "repository": {
     "type": "git",
@@ -26,10 +24,9 @@
     "generic-pool": "^2.2.0"
   },
   "devDependencies": {
-    "chai": "^3.0.0",
-    "co": "^4.5.4",
-    "coffee-script": "^1.9.3",
+    "intelli-espower-loader": "^1.0.1",
     "mocha": "^2.2.5",
+    "power-assert": "^1.2.0",
     "rethinkdb": "^2.2.1"
   }
 }

@@ -1,3 +1,8 @@
+# 1.0.0
+
+- resource management using Bluebird (provided by rethindb driver)
+- rewrite the codebase with js
+
 # 0.4.0
 
 - major changes
