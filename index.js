@@ -19,7 +19,7 @@ module.exports = function (r, options) {
   function destroy (connection) {
     connection.close()
   }
-  
+
   function validate (connection) {
     return connection.isOpen()
   }
