@@ -1,9 +1,10 @@
 /* global describe it before after */
 'use strict'
 
+const path = require('path')
 const r = require('rethinkdb')
 const assert = require('power-assert')
-const createPool = require(__dirname + '/..')
+const createPool = require(path.join(__dirname, '/..'))
 
 function isArray (o) {
   var toString = {}.toString
