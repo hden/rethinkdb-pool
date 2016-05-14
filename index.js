@@ -19,11 +19,16 @@ module.exports = function (r, options) {
   function destroy (connection) {
     connection.close()
   }
+  
+  function validate (connection) {
+    return connection.isOpen()
+  }
 
   var pool = new Pool({
     name: 'rethinkdb',
     create: create,
     destroy: destroy,
+    validate: validate,
     log: options.log || debug,
     max: options.max || 10,
     min: options.min || 1,
