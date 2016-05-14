@@ -1,3 +1,7 @@
+# 1.1.0
+
+- Check for closed connection in pool. (@dotcypress)
+
 # 1.0.0
 
 - resource management using Bluebird (provided by rethindb driver)
