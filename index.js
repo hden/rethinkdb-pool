@@ -14,16 +14,20 @@ module.exports = function (r, options) {
   var Promise = r._bluebird
 
   function create () {
-    return r.connect(options)
+    return r.connect(options).catch(function (e) {
+      throw e
+    })
   }
 
   function destroy (connection) {
-    return connection.close()
+    return connection.close().catch(function (e) {
+      throw e
+    })
   }
 
   function validate (connection) {
-    return new Promise(function (resolve, reject) {
-      resolve(connection.isOpen())
+    return Promise.try(function () {
+      return connection.isOpen()
     })
   }
 
@@ -36,11 +40,9 @@ module.exports = function (r, options) {
   var pool = createPool(factory, options)
 
   function acquire () {
-    return new Promise(function (resolve, reject) {
-      pool.acquire(function (e, conn) {
-        e ? reject(e) : resolve(conn)
-      })
-    }).disposer(function (conn) { pool.release(conn) })
+    return Promise.resolve(pool.acquire()).disposer(function (conn) {
+      return pool.release(conn)
+    })
   }
 
   pool.run = function (query, opt, done) {

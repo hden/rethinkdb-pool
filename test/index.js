@@ -11,7 +11,7 @@ function isArray (o) {
   return toString.call(o) === '[object Array]'
 }
 
-describe('rethinkdb-pool', () => {
+describe('rethinkdb-pool', function () {
   var pool
 
   before(function () {
@@ -25,15 +25,14 @@ describe('rethinkdb-pool', () => {
     })
   })
 
-  after(() => {
+  after(function () {
     return pool.run(r.tableDrop('foo'))
   })
 
-  it('should acquire connection', (done) => {
-    pool.acquire((e, conn) => {
+  it('should acquire connection', function () {
+    return pool.acquire().then(function (conn) {
       assert.ok(conn)
-      pool.release(conn)
-      done()
+      return pool.release(conn)
     })
   })
 
@@ -49,19 +48,17 @@ describe('rethinkdb-pool', () => {
     })
   })
 
-  it('should query with callback', function (done) {
-    pool.run(r.table('foo'), function (e, result) {
+  it('should query with callback', function () {
+    return pool.run(r.table('foo'), function (e, result) {
       assert(result)
       assert(isArray(result))
-      done()
     })
   })
 
-  it('should query with options and callback', function (done) {
-    pool.run(r.table('foo'), { readMode: 'majority' }, function (e, result) {
+  it('should query with options and callback', function () {
+    return pool.run(r.table('foo'), { readMode: 'majority' }, function (e, result) {
       assert(result)
       assert(isArray(result))
-      done()
     })
   })
 
