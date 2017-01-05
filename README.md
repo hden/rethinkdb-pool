@@ -3,6 +3,7 @@ rethinkdb-pool
 
 [![Build Status](https://travis-ci.org/hden/rethinkdb-pool.svg?branch=master)](https://travis-ci.org/hden/rethinkdb-pool)
 [![NPM version](https://badge.fury.io/js/rethinkdb-pool.svg)](http://badge.fury.io/js/rethinkdb-pool)
+[![dependencies Status](https://david-dm.org/hden/rethinkdb-pool/status.svg)](https://david-dm.org/hden/rethinkdb-pool)
 
 Connection-pool for RethinkDB
 
