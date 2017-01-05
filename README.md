@@ -21,8 +21,8 @@ Usage
 
 ```js
 var r    = require('rethinkdb')
-var Pool = require('rethinkdb-pool')
-var pool = Pool(r, {
+var createPool = require('rethinkdb-pool')
+var pool = createPool(r, {
   host:'localhost',
   port:28015,
   db:'marvel',

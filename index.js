@@ -1,7 +1,6 @@
 'use strict'
 
-var debug = require('debug')('rethinkdb:pool')
-var Pool = require('generic-pool').Pool
+var createPool = require('generic-pool').createPool
 
 function toArray (cursorOrResult) {
   if (cursorOrResult && typeof cursorOrResult.toArray === 'function') {
@@ -12,30 +11,29 @@ function toArray (cursorOrResult) {
 }
 
 module.exports = function (r, options) {
-  function create (done) {
-    return r.connect(options, done)
+  var Promise = r._bluebird
+
+  function create () {
+    return r.connect(options)
   }
 
   function destroy (connection) {
-    connection.close()
+    return connection.close()
   }
 
   function validate (connection) {
-    return connection.isOpen()
+    return new Promise(function (resolve, reject) {
+      resolve(connection.isOpen())
+    })
   }
 
-  var pool = new Pool({
-    name: 'rethinkdb',
+  var factory = {
     create: create,
     destroy: destroy,
-    validate: validate,
-    log: options.log || debug,
-    max: options.max || 10,
-    min: options.min || 1,
-    idleTimeoutMillis: options.idleTimeoutMillis || 30 * 1000
-  })
+    validate: validate
+  }
 
-  var Promise = r._bluebird
+  var pool = createPool(factory, options)
 
   function acquire () {
     return new Promise(function (resolve, reject) {
