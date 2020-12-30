@@ -4,8 +4,7 @@ node_js:
   - "lts/*"
 addons:
   rethinkdb: '2.3'
-after_prepare:
-  - "sudo service rethinkdb restart"
 before_script:
+  - "sudo service rethinkdb restart"
   - "npm run lint"
   - "sudo service rethinkdb status"
