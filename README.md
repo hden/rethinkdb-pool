@@ -20,9 +20,9 @@ Usage
 ## Create pool
 
 ```js
-var r    = require('rethinkdb')
-var Pool = require('rethinkdb-pool')
-var pool = Pool(r, {
+var r = require('rethinkdb')
+var createPool = require('rethinkdb-pool')
+var pool = createPool(r, {
   host:'localhost',
   port:28015,
   db:'marvel',
@@ -48,11 +48,13 @@ pool.run(query).then(function (list) {
 
 ## Acquire / release resources
 
+Connection can be acquired by calling the `.acquire()` function, but the responsibility of managing resources can be quite challenging.
+
+See: http://bluebirdjs.com/docs/api/resource-management.html
+
 ```js
-pool.acquire(function (error, connection) {
-  if (error != null) {
-    return handleError(error)
-  }
+// Don't do this! Leaks resources!
+pool.acquire().then(function (connection) {
   r.table('aTable').limit(10).run(connection, function (error, cursor) {
     if (error != null) {
       return handleError(error)

@@ -1,7 +1,6 @@
 'use strict'
 
-var debug = require('debug')('rethinkdb:pool')
-var Pool = require('generic-pool').Pool
+var createPool = require('generic-pool').createPool
 
 function toArray (cursorOrResult) {
   if (cursorOrResult && typeof cursorOrResult.toArray === 'function') {
@@ -12,37 +11,38 @@ function toArray (cursorOrResult) {
 }
 
 module.exports = function (r, options) {
-  function create (done) {
-    return r.connect(options, done)
+  var Promise = r._bluebird
+
+  function create () {
+    return r.connect(options).catch(function (e) {
+      throw e
+    })
   }
 
   function destroy (connection) {
-    connection.close()
+    return connection.close().catch(function (e) {
+      throw e
+    })
   }
 
   function validate (connection) {
-    return connection.isOpen()
+    return Promise.try(function () {
+      return connection.isOpen()
+    })
   }
 
-  var pool = new Pool({
-    name: 'rethinkdb',
+  var factory = {
     create: create,
     destroy: destroy,
-    validate: validate,
-    log: options.log || debug,
-    max: options.max || 10,
-    min: options.min || 1,
-    idleTimeoutMillis: options.idleTimeoutMillis || 30 * 1000
-  })
+    validate: validate
+  }
 
-  var Promise = r._bluebird
+  var pool = createPool(factory, options)
 
   function acquire () {
-    return new Promise(function (resolve, reject) {
-      pool.acquire(function (e, conn) {
-        e ? reject(e) : resolve(conn)
-      })
-    }).disposer(function (conn) { pool.release(conn) })
+    return Promise.resolve(pool.acquire()).disposer(function (conn) {
+      return pool.release(conn)
+    })
   }
 
   pool.run = function (query, opt, done) {
