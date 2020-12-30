@@ -5,6 +5,7 @@ node_js:
 addons:
   rethinkdb: '2.3'
 after_prepare:
-  - "sudo service rethink start"
+  - "sudo service rethinkdb restart"
 before_script:
   - "npm run lint"
+  - "sudo service rethinkdb status"
