@@ -25,8 +25,10 @@ describe('rethinkdb-pool', function () {
     })
   })
 
-  after(function () {
-    return pool.run(r.tableDrop('foo'))
+  after(async function () {
+    await pool.run(r.tableDrop('foo'))
+    await pool.drain()
+    await pool.clear()
   })
 
   it('should acquire connection', function () {
