@@ -24,10 +24,10 @@
     "generic-pool": "^3.1.6"
   },
   "devDependencies": {
-    "intelli-espower-loader": "^1.0.1",
-    "mocha": "^3.2.0",
-    "power-assert": "^1.4.2",
-    "rethinkdb": "^2.3.3",
-    "standard": "^8.6.0"
+    "intelli-espower-loader": "1.0.1",
+    "mocha": "3.5.3",
+    "power-assert": "1.6.1",
+    "rethinkdb": "2.4.2",
+    "standard": "8.6.0"
   }
 }
