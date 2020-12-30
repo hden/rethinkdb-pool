@@ -3,7 +3,7 @@ node_js:
   - "stable"
   - "lts/*"
 addons:
-  rethinkdb: '2.3'
+  rethinkdb: '2.4'
 before_script:
   - "sudo service rethinkdb restart"
   - "npm run lint"
