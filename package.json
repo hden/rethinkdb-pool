@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "intelli-espower-loader": "1.1.0",
-    "mocha": "8.3.2",
+    "mocha": "8.4.0",
     "power-assert": "1.6.1",
     "rethinkdb": "2.4.2",
     "standard": "16.0.3"
