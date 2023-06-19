@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/hden/rethinkdb-pool",
   "dependencies": {
-    "generic-pool": "3.7.8"
+    "generic-pool": "3.9.0"
   },
   "devDependencies": {
     "intelli-espower-loader": "1.1.0",
